@@ -66,7 +66,7 @@ app.post('/api/admin/register', async (req, res) => {
           return res.status(500).json({ error: err.message });
         }
 
-        const embedCode = '<script src="http://44.199.189.191:3000/widget.js" data-site-id="' + siteId + '"><\/script>';
+        const embedCode = '<script src="https://44.199.189.191:3000/widget.js" data-site-id="' + siteId + '"><\/script>';
         console.log('Sending response with siteId: ' + siteId);
         console.log('Embed code: ' + embedCode);
 
@@ -239,7 +239,7 @@ app.get('/widget.js', (req, res) => {
       send.textContent = 'Thinking...';
       
       try {
-        const response = await fetch('http://44.199.189.191:3000/api/chat', {
+        const response = await fetch('https://44.199.189.191:3000/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -296,6 +296,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log('');
   console.log('✅ Server is running!');
-  console.log('📊 Open dashboard at: http://localhost:' + PORT + '/dashboard.html');
+  console.log('📊 Open dashboard at: https://localhost:' + PORT + '/dashboard.html');
   console.log('');
 });
