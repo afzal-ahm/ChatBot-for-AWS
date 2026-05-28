@@ -66,7 +66,7 @@ app.post('/api/admin/register', async (req, res) => {
           return res.status(500).json({ error: err.message });
         }
 
-        const embedCode = '<script src="https://44.199.189.191:3000/widget.js" data-site-id="' + siteId + '"><\/script>';
+        const embedCode = '<script src="http://44.199.189.191:3000/widget.js" data-site-id="' + siteId + '"><\/script>';
         console.log('Sending response with siteId: ' + siteId);
         console.log('Embed code: ' + embedCode);
 
@@ -239,7 +239,7 @@ app.get('/widget.js', (req, res) => {
       send.textContent = 'Thinking...';
       
       try {
-        const response = await fetch('https://44.199.189.191:3000/api/chat', {
+        const response = await fetch('http://44.199.189.191:3000/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -287,7 +287,7 @@ app.get('/widget.js', (req, res) => {
 
 // Dashboard - Simple HTML
 app.get('/dashboard.html', (req, res) => {
-  const html = '<!DOCTYPE html><html><head><title>FREE Chatbot Admin</title><style>body { font-family: Arial; max-width: 1000px; margin: 50px auto; padding: 20px; } .card { background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); } h1 { color: #333; } input { width: 100%; padding: 10px; margin: 10px 0; font-size: 14px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; } button { background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; } button:hover { background: #059669; } .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #28a745; } .code { background: #f5f5f5; padding: 15px; border-radius: 4px; font-family: monospace; margin: 15px 0; word-break: break-all; border: 1px solid #ddd; } .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin: 15px 0; }</style></head><body><div class="card"><h1>💚 FREE Chatbot Admin</h1><p>Register your website and get the embed code</p><input type="url" id="url" placeholder="https://example.com" required><input type="text" id="name" placeholder="Website name (optional)"><button onclick="register()">Register Website</button><div id="result"></div></div><script>async function register() { const url = document.getElementById("url").value; const name = document.getElementById("name").value; const result = document.getElementById("result"); if (!url) { result.innerHTML = "<div class=\"error\">Please enter a URL</div>"; return; } result.innerHTML = "<p>Registering...</p>"; try { const res = await fetch("/api/admin/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ website_url: url, website_name: name }) }); const data = await res.json(); if (!res.ok) { result.innerHTML = "<div class=\"error\">Error: " + data.error + "</div>"; return; } result.innerHTML = "<div class=\"success\"><strong>✅ Success!</strong><br>Site ID: <code>" + data.siteId + "</code><br>Embed Code:<div class=\"code\">" + data.embedCode + "</div><button onclick=\"copy(\'" + data.embedCode + "\'\">Copy Code</button></div>"; } catch (e) { result.innerHTML = "<div class=\"error\">Error: " + e.message + "</div>"; } } function copy(code) { navigator.clipboard.writeText(code); alert("Copied!"); }</script></body></html>';
+  const html = '<!DOCTYPE html><html><head><title>FREE Chatbot Admin</title><style>body { font-family: Arial; max-width: 1000px; margin: 50px auto; padding: 20px; } .card { background: white; padding: 30px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,0,0,0.1); } h1 { color: #333; } input { width: 100%; padding: 10px; margin: 10px 0; font-size: 14px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; } button { background: #10b981; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; width: 100%; font-size: 16px; font-weight: bold; } button:hover { background: #059669; } .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 4px; margin: 15px 0; border-left: 4px solid #28a745; } .code { background: #f5f5f5; padding: 15px; border-radius: 4px; font-family: monospace; margin: 15px 0; word-break: break-all; border: 1px solid #ddd; } .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; margin: 15px 0; }</style></head><body><div class="card"><h1>💚 FREE Chatbot Admin</h1><p>Register your website and get the embed code</p><input type="url" id="url" placeholder="http://example.com" required><input type="text" id="name" placeholder="Website name (optional)"><button onclick="register()">Register Website</button><div id="result"></div></div><script>async function register() { const url = document.getElementById("url").value; const name = document.getElementById("name").value; const result = document.getElementById("result"); if (!url) { result.innerHTML = "<div class=\"error\">Please enter a URL</div>"; return; } result.innerHTML = "<p>Registering...</p>"; try { const res = await fetch("/api/admin/register", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ website_url: url, website_name: name }) }); const data = await res.json(); if (!res.ok) { result.innerHTML = "<div class=\"error\">Error: " + data.error + "</div>"; return; } result.innerHTML = "<div class=\"success\"><strong>✅ Success!</strong><br>Site ID: <code>" + data.siteId + "</code><br>Embed Code:<div class=\"code\">" + data.embedCode + "</div><button onclick=\"copy(\'" + data.embedCode + "\'\">Copy Code</button></div>"; } catch (e) { result.innerHTML = "<div class=\"error\">Error: " + e.message + "</div>"; } } function copy(code) { navigator.clipboard.writeText(code); alert("Copied!"); }</script></body></html>';
   res.send(html);
 });
 
@@ -296,6 +296,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log('');
   console.log('✅ Server is running!');
-  console.log('📊 Open dashboard at: https://localhost:' + PORT + '/dashboard.html');
+  console.log('📊 Open dashboard at: http://localhost:' + PORT + '/dashboard.html');
   console.log('');
 });
