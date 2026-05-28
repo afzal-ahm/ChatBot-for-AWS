@@ -39,12 +39,28 @@ async function scrapeWebsite(url) {
 
 // Generate response with FREE Ollama
 async function generateResponse(message, content) {
-  const response = await axios.post(process.env.OLLAMA_API + '/api/generate', {
-    model: process.env.OLLAMA_MODEL,
-    prompt: 'Website:\n' + content + '\n\nQuestion: ' + message + '\n\nAnswer briefly based ONLY on the content above.',
-    stream: false
+  const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+    model: 'mixtral-8x7b-32768',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful customer support chatbot. Answer based ONLY on the website content provided.'
+      },
+      {
+        role: 'user',
+        content: 'Website:\n' + content + '\n\nQuestion: ' + message + '\n\nAnswer briefly.'
+      }
+    ],
+    temperature: 0.7,
+    max_tokens: 500
+  }, {
+    headers: {
+      'Authorization': 'Bearer ' + process.env.GROQ_API_KEY,
+      'Content-Type': 'application/json'
+    }
   });
-  return response.data.response;
+
+  return response.data.choices[0].message.content;
 }
 
 
